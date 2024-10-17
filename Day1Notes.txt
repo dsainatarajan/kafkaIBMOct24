@@ -1,0 +1,175 @@
+Day1:
+ToC Walkthrough
+Trainer Introduction	-> D Sai Natarajan, 15 Yrs exp
+General Instructions
+Labs		-> Unique lab provided for everyone
+Materials	-> All materials used during session will be shared
+Participants Introduction
+
+Session start
+
+Pre-requisites:
+Linux		-> Will be very essential
+Java		-> Will be very helpful
+Springboot	-> 2 exercises planned for spring
+Docker		-> will be nice to have
+SQL			-> 1 exercise
+
+No prior message queue knowledge is expected
+
+General Instructions:
+	Ask Questions as soon as you have, please dont wait for Q&A part
+	Feedback: Session pacing, Network issue
+	
+
+Participants Introduction
+
+Yrs, Domain, Message queue, Linux, Java, Spring, SQL, docker, kafka
+Special expectations
+
+Yrs:14+ Yrs, Domain:Retail, Manufacturing, Message queue: rabbitmq, kafka, activemq, Linux:Ubuntu, Centos, Java:14Yrs, Spring:10 yrs,microservice, SQL:14Yrs,mysql, docker:8 yrs, kafka:9Yrs, microservice & ETL
+
+
+Agenda: 
+Kafka Introduction 
+Kafka Features 
+Kafka vs AMQP 
+Kafka Features 
+Kafka Real Use Cases
+Digital Software Transformation From Monolithic to 
+MicroServices to Serverless Applications 
+Event-Driven Architecture ( EDA )
+- MicroServices
+- Serverless
+- FaaS
+- Streaming
+- Event Sourcing
+- CQRS
+Reactive Manifesto
+Kafka Case Studies - MicroServices Log Analysis
+- Invoice Processing
+- Distributed Transaction Management with SAGA Pattern
+- Data Migration between databases
+Elements of Kafka [Consumer, Producer, Broker, ZooKeeper, Cluster] 
+Kafka Architecture
+Kafka Overall Messaging Architecture 
+Kafka Streaming Architecture 
+Kafka Consumer and Producer Architecture 
+Kafka Persistence Architecture 
+Kafka Clusters 
+Kafka Consumer Workers Group
+Apache Kafka 
+Confluence Kafka Open Source 
+Confluence Kafka Enterprise 
+Java JDK 
+Kafka Setup 
+Zookeeper Configuration 
+Single Broker Configuration 
+Understanding build-in tools, Kafka server, test publisher, test 
+consumer 
+Configuration Kafka Single Node Broker 
+Start ZooKeeper 
+Start Kafka Server 
+Using Example console consumer and publisher 
+Broker, Consumer, Producer Configuration
+
+
+What is message queue
+Compare Kafka with other message queue
+Kafka Architecture: Terminologies, scalability, brokers, topics, partitions
+Handson:
+Kafka Demo: create topic, start a producer, publish messages, start consumer, consume messages
+
+Message Queues: Rabbitmq, Activemq, Zmq, IBM MQ, Kafka, Redis(queue), etc
+
+
+Direct synchronous communication, tightly coupled
+Asynchronous communication with message queue, loosely coupled
+
+
+Message queue simplifies the asynchronous communication between applications
+
+Terminologies:
+	1. Applications writing data into a queue is called Publisher
+	2. Applications reading data from a queue is called Subscriber
+	3. Messages are stored in a server application called Broker
+	4. Every record of data is called a message
+	5. Messages are stored in a sequence inside a Queue
+	6. Every message is tracked using a unique per message number called offset
+	7. This communication with queue is called PubSub model
+
+1 msg -> 10kb
+1 Million/sec => 1 TB/sec
+500000 msg/sec -> 500 mbps		-> 1 Broker 1 GBPS bandwidth
+1000000 msg/sec -> 1 gbps		-> 2 Broker 2 GBPS bandwidth
+
+1 Broker(1bgps)	-> cluster => 1 GBPS
+3 Broker(1bgps) -> cluster => 3 GBPS
+
+
+Break from 11.30 to 11.45 PM!
+
+Kafka Vs Rabbitmq
+
+Kafka Terminologies
+
+Terminology						Rabbitmq		kafka
+Queue							Queue			Topic
+App writing data into queue		Publisher		Producer
+App Reading data from queue		Subscriber		Consumer
+Model							PubSub 			Producer-Consumer
+Message Delivery				Push mechanism	Pull Mechanism
+Offset management				Broker			Consumer
+														Topics->Partitions, Replication
+
+
+Topics->Partitions, Replication
+Consumer Group, Consumer Group Balancing
+
+Kafka runs on port 9092		-> bootstrap-server => 9092 port
+
+Kafka Installation on Linux(Ubuntu)		-> Demo only
+Installation Commands:
+sudo -i
+apt update
+apt install openjdk-17-jdk wget curl -y
+java -version
+wget https://archive.apache.org/dist/kafka/3.6.1/kafka_2.12-3.6.1.tgz
+tar -xvf kafka_2.12-3.6.1.tgz
+ls kafka_2.12-3.6.1
+mv kafka_2.12-3.6.1 /usr/kafka
+export KAFKA_HOME=/usr/kafka
+export PATH=$PATH:$KAFKA_HOME/bin
+zookeeper-server-start.sh -daemon /usr/kafka/config/zookeeper.properties
+jps
+# You should QuorumPeerMain listed
+kafka-server-start.sh -daemon /usr/kafka/config/server.properties
+jps
+# Both QuorumPeerMain and kafka should be lister
+
+
+Kafka topic creation, producer & consumer	-> Handson
+1. Connect to the kafka container using docker exec -it command
+2. Create a topic in the kafka cluster using kafka-topics.sh
+3. Launch a console producer using the kafka-console-producer.sh
+4. Producer a few messages from the console producer
+5. Launch a new terminal, connect to the kafka container using the docker exec -it command
+6. Launch the kafka console consumer
+7. Observe all the records produced from the producer will be consumed by the consumer
+
+
+Download link:
+https://kafka.apache.org/downloads
+https://archive.apache.org/dist/kafka/
+
+
+
+Port details of Kafka:
+kafka runs on port:				9092
+	bootstrap-server, broker	9092
+
+Port details of zookeeper:
+zookeeper runs on port:			2181
+
+
+Brindha(Alchemy)		-> 8072237451, brindha.n@alchemylearnsoft.com
