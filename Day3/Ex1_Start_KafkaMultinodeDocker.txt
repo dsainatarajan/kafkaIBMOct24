@@ -1,7 +1,7 @@
 # Stop all running producers & consumers
 # multinode kafka deployment using docker-compose, exit to host machine if you are inside the container
 exit
-cd Downloads/kafka-docker/singlenodekafka
+cd Dockements/singlenodekafka
 docker-compose stop
 cd ..
 cd multinodekafka
