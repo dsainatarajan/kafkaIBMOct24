@@ -1,16 +1,26 @@
 Day4:
-Kafka TOpic Administration
 Java Producer
 Java Consumer
 Java Advanced Producer settings
 Java Advanced Consumer Settings
+Kafka TOpic Administration
 
 
-Explicit Replica Assignemtn control is possible in kafka topic:
+Simple Producer:
+Java, Maven(pom.xml)
+Serialization: Serializer, DeSerializer
+https://kafka.apache.org/23/javadoc/org/apache/kafka/clients/producer/ProducerRecord.html
 
-kafka-topics.sh --create --bootstrap-server kafka1:9092 --topic test4 
-//					 P0  P1  P2
---replica-assignment 1:2,3:2,3:1
+ProducerRecord(String topic, V value)
+Create a record with no key
+ProducerRecord(String topic, K key, V value)
+Create a record to be sent to Kafka
+ProducerRecord(String topic, Integer partition, K key, V value)
+Creates a record to be sent to a specified topic and partition
+
+properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+# Console consumer --from-beginning => code -> earliest
+# Default is latest -> consumer can only read messages produced after the consumer is started
 
 Break from 12.00 PM to 12.15 PM!
 
@@ -29,7 +39,25 @@ Creates a record to be sent to a specified topic and partition
 https://github.com/dsainatarajan/kafkacode
 
 
+producer.send(record);		-> Async Call
+producer.send(record).get();	-> Sync all, get is a blocking call
 
+Get will only return after getting ack from broker, otherwise you will get error on timeout
 
+producer.send(record, new Callback() {
+	public void onCompletion(RecordMetadata recordMetadata, Exception e) {
+		// executes every time a record is successfully sent or an exception is thrown
+		if (e == null) {
+			// the record was successfully sent
+			logger.info("Received new metadata. \n" +
+					"Topic:" + recordMetadata.topic() + "\n" +
+					"Partition: " + recordMetadata.partition() + "\n" +
+					"Offset: " + recordMetadata.offset() + "\n" +
+					"Timestamp: " + recordMetadata.timestamp());
+		} else {
+			logger.error("Error while producing", e);
+		}
+	}
+}
 
 
