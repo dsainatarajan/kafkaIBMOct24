@@ -29,6 +29,7 @@ ls -lh target/
 
 # notice the jar with the dependency
 # running the producer Jar
+cd target
 java -jar KafkaProducerDemo-0.0.1-SNAPSHOT-jar-with-dependencies.jar 
 
 # You should see 2 messages consumed on the console consumer
