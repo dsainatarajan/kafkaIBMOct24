@@ -56,13 +56,16 @@ FaultTolerance	  = 2 -1 -> 1
 More partitions				-> higher performance
 More replication-factor		-> higher fault tolerance
 
-
+Hashmap -> Record<Key,Value>  => Kafka topic is simillar to distributed hashmaps, but the multiple records can be produced with same key
 
 Message Structure(key, value)
 	Every message is a record in kafka topic, it is made of 2 components key & value. Key is optional & when not used, it will take a default value of NULL
 	In Java, if you have used Hashmap then that is the way records are saved in the topic -> (Key,value) pair => Topic is simillar to a distributed hashmap
 
 What should be chosen as a key for a record
+	1. Key determines the partition to which a record will be produced
+	2. Key determines the distribution of the data in the partitions of the topic
+	3. Key impacts the message ordering
 
 Message Routing: There is a default message routing algorithm used by kafka
 
@@ -95,7 +98,7 @@ Break from 11.16 to 11.31 AM!
 
 Consumer Groups
 
-Kafka ensures every consumer is assigned roughly equal number of messages
+Kafka ensures every consumer is assigned roughly equal number of partitions
 Kafka will never assign same partition to more than one consumer in the same group
 One consumer can have one or more partitions assigned to it by kafka
 Kafka can ensure exactly once delivery of every message to a consumer group
@@ -112,7 +115,7 @@ NumPartitions == Max number of Active consumers in the group
 
 If there are more consumers in the group than the number of partitions in the topic, then additional consumer will remain idle
 
-
+kafka tries distribute the partitions such that, each broker has equal number of partitions, each broker get equal number of leader partitions
 
 Partitions -> Partitions are for scalability
 		Partitions does not provide fault tolerance
@@ -186,11 +189,21 @@ one of the brokers holding the partitions of the topic will take an additional r
 If a consumer in the group leaves(suddenly crashes), then the partition assigned to that failed consumer is no longer assigned to any valid consumer => kafka consumer group coordinator will rebalance the consumer group and it will assign the partition to one of the existing consumers in the consumer group
 
 
+https://learn.conduktor.io/kafka/producer-default-partitioner-and-sticky-partitioner/
 
 
 
+topic1: orders1, orders2, orders3
+consumer: subscribe("orders*")
+producers -> order1 => consumers
 
 
+Partitions, Replication, Message(record<key,value>) structure, Message ordering, message routing
 
+Break from 11.17 to 11.32 AM!
+
+Consumer Group
+
+Kafka ensures every message in the topic is delivered exactly once per group
 
 

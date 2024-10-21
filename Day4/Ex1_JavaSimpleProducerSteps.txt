@@ -1,0 +1,47 @@
+exit
+# Exit to the host machine
+cd C:\\users\Admin
+mkdir code
+cd C:\\users\Admin\\code
+
+git clone https://github.com/dsainatarajan/kafkacode.git
+
+docker pull maven:3.9.8-eclipse-temurin-11-focal
+
+docker run --name mvn --network multinodekafka_default -v .:/code -it  maven:3.9.8-eclipse-temurin-11-focal bash
+apt update && apt install unzip
+
+
+cd /code/kafkacode
+ls
+unzip 1simple_producer.zip
+ls
+cd 1simple_producer/KafkaProducerDemo/
+mvn package
+ls -lh target/
+exit
+# notice the jar with the dependency
+# copy the jar with dependencies from host to the kafka1 container
+docker cp kafkacode/1simple_producer/KafkaProducerDemo/target/KafkaProducerDemo-0.0.1-SNAPSHOT-jar-with-dependencies.jar multinodekafka-kafka1-1:/
+
+docker exec -it multinodekafka-kafka1-1 bash
+ls /
+# notice the jar
+
+# create the topic
+kafka-topics.sh --create --bootstrap-server kafka1:9092 --partitions 3 --replication-factor 2 --topic first_topic
+
+# running the producer Jar
+java -jar KafkaProducerDemo-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+
+# start a kafka console consumer on another tab
+docker exec -it multinodekafka-kafka1-1 bash
+# start the consumer with metadata print option
+kafka-console-consumer.sh --bootstrap-server kafka1:9092 --topic first_topic --property "print.key=true" --property "print.offset=true"  --property "print.partition=true" --from-beginning
+# notice the routing of message with & without key, observe the difference
+
+# run the producer few more times and observe the console consumer
+java -jar KafkaProducerDemo-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+java -jar KafkaProducerDemo-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+java -jar KafkaProducerDemo-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+
