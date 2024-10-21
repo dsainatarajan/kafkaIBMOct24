@@ -1,6 +1,6 @@
 # Connect the maven container from a new terminal
 docker start mvn
-docker exec -it mvn back
+docker exec -it mvn bash
 cd /code/kafkacode
 unzip 2simple_consumer.zip
 cd 2simple_consumer/KafkaConsumerSimple
@@ -18,7 +18,7 @@ java -jar KafkaProducerDemo-*-with-dependencies.jar
 
 # On another terminal
 docker exec -it mvn bash
-cd /code/kafkacode/2simple_consumer/KafkaConsumerSimple
+cd /code/kafkacode/2simple_consumer/KafkaConsumerSimple/target
 java -jar ConsumerDemo-*-with-dependencies.jar
 # observe the 2 consumer jar instances will consume as a group
 
