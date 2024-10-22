@@ -1,0 +1,10 @@
+# Launch a new command prompt: Start -> cmd -> Enter
+docker exec -it mvn bash
+cd /code/kafkacode
+unzip 4advance_producer.zip
+cd 4advance_producer/kafka-producer/
+mvn package
+ls target
+cd target
+java -jar kafka-producer-0.0.1-SNAPSHOT-jar-with-dependencies.jar first_topic
+# Observe the existing consumer jars, you will observe the records produced by the producer received
