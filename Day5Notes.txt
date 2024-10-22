@@ -11,12 +11,20 @@ Settings:
 	4. Reduce latency
 https://docs.confluent.io/platform/current/installation/configuration/producer-configs.html
 
+Important properites:
+enable.idempotence
+acks
+in-sync replicas
+retries 
+max.in.flight.requests.per.connection
+
+Kafka Definitive Guide
+
 //Set acknowledgements for producer requests.      
 props.put("acks", "all"); -> All replicas should be comitted to the disc before ack
 props.put("acks", "0");   -> Almost Fire & forget, leader received record in memory
 props.put("acks", "1");	  -> Leader comitted the record to the disc
 props.put("acks", "2");	  -> Leader+1 follower comitted record to disc
-
 
 props.put("acks", "all") + side effect from topic level property min.insync.replicas=2
 
@@ -46,14 +54,91 @@ producer.send(record);		-> Async, once the send is triggered, you can continue t
 producer.send(record new Callback(onCompletion()));		-> Async with error handling
 
 Throughput:
-sync send		-> 1000 msg/sec
+option1:
+producer.send(record).get();
+sync send		-> 500 msg/sec
+
+option2:
+props.put("enable.idempotence", "true");
+producer.send(record).callback();
 async send		-> > 2000 msg/sec
 
 https://docs.confluent.io/platform/current/installation/configuration/producer-configs.html
 
+compression algorithm:
+algorithm1		-> 3 ms   => raw record: 10mb,  compressed: 9mb
+algorithm2		-> 10 ms   => raw record: 10mb, compressed: 6mb
 
 
-Break from 11.30 to 11.45 AM!
+Break from 11.35 to 11.50 AM!
+
+Advanced Consumer settings
+
+
+Java Advanced Consumer Settings
+	i) Delivery Semantics, offset commit
+	ii) Batch Size
+	iii) Polling
+
+Delivery Semantics
+	i) Atmost Once
+	ii) Atleast Once
+	iii) Exactly Once
+Reading from specific partition & Offset
+
+
+https://docs.confluent.io/platform/current/installation/configuration/producer-configs.html
+
+https://kafka.apache.org/11/javadoc/org/apache/kafka/clients/producer/KafkaProducer.html
+
+
+Consumer offset commit:
+Default	-> Auto commit is enabled
+	properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
+
+properties.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG,"100"); -> batch size for consumer
+
+
+Atmost Once		-> Auto commit
+Atleast Once	-> Manual commit per batch
+Exactly Once	-> Manual commit per record
+Consumer:
+How messages are consumed by consumer can be one of the following
+	i) Atmost Once	-> Default(auto_commit=true, per batch auto commit)
+	ii) Atleast Once -> auto_commit=false, per batch manual commit 
+							commit after processing all messages in the batch
+	iii) Exactly Once -> auto_commit=false, Per Record manul commit
+
+Atmost Once:
+	properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
+	ConsumerRecords<String,String> records = consumer.poll(Duration.ofMillis(100)); 
+	  for (ConsumerRecord<String, String> record : records)
+	  {
+			 System.out.printf("offset = %d, key = %s, value = %s\n", 
+					 record.offset(), record.key(), record.value());
+	  }
+	  
+Atleast Once:
+	properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
+	ConsumerRecords<String,String> records = consumer.poll(Duration.ofMillis(100)); 
+	  for (ConsumerRecord<String, String> record : records)
+	  {
+			 System.out.printf("offset = %d, key = %s, value = %s\n", 
+					 record.offset(), record.key(), record.value());
+	  }
+	  consumer.commitSync();
+
+Exactly Once:
+	properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
+	ConsumerRecords<String,String> records = consumer.poll(Duration.ofMillis(100)); 
+	  for (ConsumerRecord<String, String> record : records)
+	  {
+			 System.out.printf("offset = %d, key = %s, value = %s\n", 
+					 record.offset(), record.key(), record.value());
+			// offset commit per record
+			 consumer.commitSync(Collections.singletonMap(partitionReadFrom, new OffsetAndMetadata(record.offset())));
+	  }
+
 
 
 
