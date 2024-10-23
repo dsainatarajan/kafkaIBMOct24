@@ -1,0 +1,99 @@
+Day6:
+Zookeeper
+Kafka TOpic Advanced Administration
+Consumer group monitoring of Kafka clients
+Springboot kafka
+Kafka Streams
+
+
+ZooKeeper: Distributed Storage & Coordination System
+
+Old command:
+kafka-topics.sh --list --zookeeper localhost:2181
+
+New command:
+kafka-topics.sh --list --bootstrap-server kafka1:9092
+
+Clients only communicate to kafka brokers now and they dont connect to zookeeper anymore
+ZooKeeper:
+Is a distributed storage and coordinator
+Services of ZooKeeper
+	i) It provides persistence(storage) to important kafka metadata
+	ii) It provides notifications(coordination) about broker details
+
+ZooKeeper is distributed(multinode) system made of Leader & Follower nodes
+Leader -> write, read
+follower -> read, client cannot directly perform write operation on follower
+	If a client commands a follower with write operation, the follower will forward the write request to the leader
+
+Notification system of ZooKeeper works as a Watch mechanism
+
+Kraft => Replacement for ZooKeeper service
+Kafka 1,2 => ZooKeeper Mandatory
+Kafka 3   => ZooKeeper or Kraft
+
+ZooKeeper Cli: Metadata stored by kafka list
+
+Multinode kafka => node1
+
+All writes & reads to zookeeper are quorum based, quorum => majority
+Write data to zookeeper -> Majority of zookeeper nodes should have comitted & ack the commit. only the client will get success response
+
+If the number of zookeeper nodes in the zookeeper cluster increases, then the time required to reach quorum will also increase
+
+ZooKeeper storage is like a linux filesystem
+root folder /
+folders => znodes
+data 
+znodes can have more znodes(folders) or they can have data
+
+ls -> znode will list subfolder(znodes)
+get -> znode will return data stored in the znode
+zkCli.sh -> shell script to connect to the zookeeper
+
+Consumer group monitoring of Kafka clients
+
+kafka-consumer-groups.sh --bootstrap-server kafka1:9092 --all-groups --describe
+kafka-consumer-groups.sh --bootstrap-server kafka1:9092 --all-groups --list
+
+Scenario:
+4 Partitions, 2 consumers, Lag keeps increasing
+	-> Consumers are not able to keep up pace with the new messages received
+	-> Fix => Add 2 more consumers
+
+Scenario:
+4 Partitions, 4 consumers, Lag keeps increasing
+	-> Consumers are not able to keep up pace with the new messages received
+	-> Fix => i) First increase the number partitions in the topic to 8
+			  ii) Increase the number of consumers to 8
+		
+Spring Kafka:
+	Producer code:	
+@Service
+public class KafkaSender {
+	
+	@Autowired
+	private KafkaTemplate<String, String> kafkaTemplate;
+	
+	String kafkaTopic = "test";
+	
+	public void send(String data) {
+	    
+	    kafkaTemplate.send(kafkaTopic, data);
+	}
+}
+
+
+	Consumer Code:
+private CountDownLatch latch = new CountDownLatch(1);
+
+@KafkaListener(topics = "${test.topic}", groupId = "foo")
+public void receive(ConsumerRecord<?, ?> consumerRecord) {
+	LOGGER.info("received payload='{}'", consumerRecord.toString());
+	latch.countDown();
+}
+
+Spring Kafka
+https://medium.com/@prekshaan95/java-spring-boot-kafka-connection-setup-1f494df4eff4
+
+

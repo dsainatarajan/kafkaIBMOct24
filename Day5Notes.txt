@@ -51,7 +51,7 @@ producer.send(record).get();		-> Blocking call & will make the produced wait unt
 producer.send(record);		-> Async, once the send is triggered, you can continue to work on sending the next record. send is a non-blocking function
 
 
-producer.send(record new Callback(onCompletion()));		-> Async with error handling
+producer.send(record, new Callback(onCompletion()));		-> Async with error handling
 
 Throughput:
 option1:
