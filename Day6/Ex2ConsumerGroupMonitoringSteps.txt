@@ -21,7 +21,7 @@ kafka-consumer-groups.sh --bootstrap-server kafka1:9092 --all-groups --describe
 
 
 # Start the consumer jar again & test the output, you should see 0 lag
-cd 5advancede_consumer_manualcommit/5advancede_consumer_manualcommit/kafka-consumer/target
+cd /code/kafkacode/5advancede_consumer_manualcommit/5advancede_consumer_manualcommit/kafka-consumer/target
 java -jar *-jar-with-dependencies.jar
 
 # on the kafka1 container run the below command
