@@ -1,8 +1,8 @@
 Day6:
 Zookeeper
-Kafka TOpic Advanced Administration
 Consumer group monitoring of Kafka clients
 Springboot kafka
+Kafka TOpic Advanced Administration
 Kafka Streams
 
 
@@ -51,24 +51,34 @@ ls -> znode will list subfolder(znodes)
 get -> znode will return data stored in the znode
 zkCli.sh -> shell script to connect to the zookeeper
 
+Break from 11.25 AM to 11.40 AM!
+
+
 Consumer group monitoring of Kafka clients
 
 kafka-consumer-groups.sh --bootstrap-server kafka1:9092 --all-groups --describe
 kafka-consumer-groups.sh --bootstrap-server kafka1:9092 --all-groups --list
 
-Scenario:
+
+Scenario1:
 4 Partitions, 2 consumers, Lag keeps increasing
 	-> Consumers are not able to keep up pace with the new messages received
 	-> Fix => Add 2 more consumers
 
-Scenario:
+Scenario2:
 4 Partitions, 4 consumers, Lag keeps increasing
 	-> Consumers are not able to keep up pace with the new messages received
-	-> Fix => i) First increase the number partitions in the topic to 8
-			  ii) Increase the number of consumers to 8
+	-> Fix => 2 step solution
+		i) First increase the number partitions in the topic to 8
+		ii) Increase the number of consumers to 8
 		
-Spring Kafka:
-	Producer code:	
+Spring Kafka: Spring Producer, Spring consumer
+
+Add additional configurations:
+	application.properties
+	Configuration class
+
+Producer code:	
 @Service
 public class KafkaSender {
 	
