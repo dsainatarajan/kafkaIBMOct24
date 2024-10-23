@@ -8,24 +8,29 @@ cd 7springkafkademo_upgraded/springkafkaproducerdemo
 
 apt update && apt install openjdk-17-jdk -y
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-export PATH=/usr/lib/jvm/java-17-openjdk-amd64:$PATH
+export PATH=/usr/lib/jvm/java-17-openjdk-amd64/bin/:$PATH
 java -version
 # Java version should be listed as 17
 
 mvn package
 ls target
 # build the spring consumer jar
-cd /HOME/kafkacode
+cd /code/kafkacode
 cd 7springkafkademo_upgraded/springdemoconsumer
 
 mvn package
 ls target
-exit
 
+# Launch a new terminal to copy the jars built to kafka1
+Start -> cmd
+docker start mvn
+cd Documents
 # copy the jars from mvn container to kafka1 container
-docker cp mvn:/code/kafkacode/7springkafkademo_upgraded/springkafkaproducerdemo/target/*.jar multinodekafka-kafka1-1:/springproducer.jar
+docker cp mvn:/code/kafkacode/7springkafkademo_upgraded/springkafkaproducerdemo/target/*.jar .
+docker cp springkafkademo-0.0.1-SNAPSHOT.jar  multinodekafka-kafka1-1:/springproducer.jar
 
-docker cp mvn:/code/kafkacode/7springkafkademo_upgraded/springdemoconsumer/target/*.jar multinodekafka-kafka1-1:/spring-consumer.jar
+docker cp mvn:/code/kafkacode/7springkafkademo_upgraded/springdemoconsumer/target/*.jar .
+docker cp springkafkademoconsumer-0.0.1-SNAPSHOT.jar multinodekafka-kafka1-1:/spring-consumer.jar
 
 docker exec -it multinodekafka-kafka1-1 bash
 kafka-topics.sh --create --bootstrap-server kafka1:9092 --replication-factor 2 --partitions 3 --topic test
