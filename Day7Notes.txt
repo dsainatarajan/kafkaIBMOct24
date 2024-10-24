@@ -1,26 +1,38 @@
 Day7:
 Kafka Streams
+Kafka Advanced Admin Commands
+Microservices Architecture for Kafka
 Confluent Kafka
 Confluent Control Center
 Confluent Ksqldb
 
-
-Producer:
-	Get API	-> message -> kafkaTemplate.send(message);
-	
-	curl http://localhost:8080/kafka/send?message=HelloWorld
-
-Consumer:
-	@KafkaListener(topic, groupID)
-		getMessage(ConsumerRecord rcd){
-		logger.log(rcd) 
-	}
-
 Kafka Streams		-> A stream processing application
 	Is built on the Java Streams API
+	Is a feature available in Apache Kafka itselt
+	Java Producer, Consumer API Vs Stream processing API
 
-list.stream().map().filter().reduce()					-> Java Stream
-StreamBuilder(kafkaTopic).map().filter().reduce()		-> Kafka Streams
+Normal:
+for(eleme e: list){
+	if(e.value %2 ==0)
+		sum += e.vale+10;
+}
+
+Stream processing using Streams API:
+Stream<List<Int>> lStream = list.stream();
+lStream.filter(e.value %2 == 0).sum();
+
+
+High Level processing APIs offered by streams: 
+Records are automatically streamed, we just handle one record from a stream:
+	map, flatmap, filter, etc 
+	Stateless
+	
+Aggregations with multiple records:
+	groupBy, groupByKey, reduce, reduceByKey
+	Statefull, window based operations
+	
+list.stream().map().filter().reduce()			-> Java Stream
+StreamBuilder(kafkaTopic).map().filter().reduce()-> Kafka Streams
 Kafka Streams API is part of the core apache Kafka
 
 ETL Processing, Data Processing		-> Streams API is very helpful
@@ -32,7 +44,8 @@ Consumer	-> DeSerializer
 Producer	-> Serializer
 StreamsApp	-> SerDe		=> Serializer+DeSerializer
 
-Break from 11.26 to 11.41 AM!
+
+
 
 SimplePipe		-> Read From Source Topic -> Write to Target Topic
 No Processing involved		=> Getting started exercise for Streams
@@ -45,7 +58,7 @@ key -> order1
 value -> 250
 
 map((k,v), pair(k, (v + v*0.1)))
-
+v=500 => v = 500 + 500*0.1  => v=550
 
 Kafka Stream Repo:
 https://github.com/dsainatarajan/kafkastreamsjava
@@ -100,6 +113,22 @@ String.valueOf(Double.parseDouble(v.toString().trim())
     		   +Double.parseDouble(v.toString().trim())*0.1))
 # 200	-> 200 + 200*0.10 => 200+20 -> 220
 
+
+Offset commit:
+Record1: <Key: "grp1, topic1, P0", Value: "offset:1">
+Record2: <Key: "grp1, topic1, P0", Value: "offset:3">
+
+Compaction  -> Delete all records with the same key and only retain the latest record for each key
+After compation:
+Record2: <Key: "grp1, topic1, P0", Value: "offset:3">
+
+
+Saga Design Pattern: Event Driven Architecture
+Distributed Transaction
+	Committed transactions in each microservice cannot be undone, cannot be rolled back as it is already comitted
+	Retore validity of data when there is a failed transaction?
+		Compensating Transaction
+		Eventually Consistent, intermediate incosistency will be there when there are failurs. Eventual consistency is restored through compensating transactions
 
 Confluent Kafka
 Confluent Control Center
