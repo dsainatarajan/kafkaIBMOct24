@@ -8,6 +8,7 @@ kafka-topics.sh --list --bootstrap-server kafka1:9092
 
 # exit to the host
 exit
+docker start mvn
 docker exec -it mvn bash
 git clone https://github.com/dsainatarajan/kafkastreamsjava.git
 cd kafkastreamsjava
