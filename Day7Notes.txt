@@ -130,34 +130,6 @@ Distributed Transaction
 		Compensating Transaction
 		Eventually Consistent, intermediate incosistency will be there when there are failurs. Eventual consistency is restored through compensating transactions
 
-Confluent Kafka
-Confluent Control Center
-
-Apache Kafka  -> Totally free for any purpose, no support
-Enterprise Kafka:
-	1. Cloudera
-	2. Confluent 
-	3. others
-Confluent:
-	Community edition: No support, can be used commercial
-	Enterprise edition: With support for a license fee
-		Single node is free
-	
-Confluent Kafka:
-Admin Web UI: Confluent Control Center
-	i) Ksqldb
-	ii) Rest Proxy
-	iii) Schema Registry
-
-
-
-Starting the confluent cluster:
-	Stop the Multinode Apache Kafka Cluster
-	Start the confluent kafka cluster
-Confluent control center
-
-
-
 
 
 
