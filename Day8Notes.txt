@@ -1,4 +1,37 @@
 Day8:
+Confluent Kafka
+Confluent Control Center
+Confluent
+	i) Ksqldb
+	ii) Rest Proxy
+	iii) Schema Registry
+Security
+Kafka connect
+
+Confluent Kafka
+Confluent Control Center
+
+Apache Kafka  -> Totally free for any purpose, no support
+Enterprise Kafka:
+	1. Cloudera
+	2. Confluent 
+	3. others
+Confluent:
+	Community edition: No support, can be used commercial
+	Enterprise edition: With support for a license fee
+		Single node is free
+	
+Confluent Kafka:
+Admin Web UI: Confluent Control Center
+	i) Ksqldb			-> SQL interface to topics of kafka
+	ii) Rest Proxy		-> Kafka is exposed as REST API
+	iii) Schema Registry -> Schema validation for data of kafka topic
+
+Starting the confluent cluster:
+	Stop the Multinode Apache Kafka Cluster
+	Start the confluent kafka cluster
+Confluent control center
+
 Confluent Ksqldb
 Confluent Rest Proxy
 Confluent Schema Registry
@@ -6,13 +39,12 @@ Kafka Security
 Kafka Connect
 
 
-Kafka Streams alternative		-> Spark Streaming, Storm
+
 Ksqldb: Is an exclusive feature available in the Confluent platfrom
 We can interact with Kafka using SQL language
 Components of Ksqldb -> Ksqldb Server, Ksqldb Client, SDK for programming language
 
 You can run SQL query on realtime streaming data
-
 KSQL DB stores data using Avro format, Avro format stores the data mapped to a schema
 
 SQL for kafka
@@ -49,9 +81,13 @@ transactions -> Stream	=> Stores every event in the topic
 
 Anomaly		 -> Table	=> Stores only the latest information for a key in the topic
 
+Break from 11.30 AM to 11.45 AM!
+
+http://localhost:9092 -> never done on http, kafka does not work on http
+
 Confluent Rest Proxy	-> REST Interface to interact with Kafka
 
-REST API protocol		-> http,https => Inefficient for large data transfer usecases
+REST API protocol		-> http,https => Inefficient for large data transfer with low latency usecases
 mysql, postgresql, rabbitmq => custom tcp protocol
 	mysql://localhost:3306, s3://bucket_name/folder/file.txt
 Kafka does not directly expose REST API Interface because http, https are not efficient
@@ -70,11 +106,11 @@ kafka -> 9092
 Rest-proxy -> 8082
 
 Consumer:
-	1. Create the consumer object with properties	-> Register the consumer
+	1. Create the consumer object with properties -> Register the consumer
 	2. Subscribe to the topic we want to consume from
 	3. Start polling broker for records
 
-Break from 12.04 to 12.20 PM!
+
 
 Confluent Schema Registry
 
