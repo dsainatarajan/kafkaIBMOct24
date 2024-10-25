@@ -110,7 +110,7 @@ Consumer:
 	2. Subscribe to the topic we want to consume from
 	3. Start polling broker for records
 
-
+https://github.com/dsainatarajan/kafkaIBMOct24/blob/main/Day8/Ex3_KafkaRestProxyConfluent.txt
 
 Confluent Schema Registry
 

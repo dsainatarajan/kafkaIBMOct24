@@ -45,3 +45,4 @@ kafka-console-producer --bootstrap-server localhost:9092 --topic payment
 >Invalid record
 # instantly the avro consumer will crash because of receiving the invlid record
 
+
